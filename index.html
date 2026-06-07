@@ -127,9 +127,6 @@
         }
 
         /* 심층 결과 리포트 스타일 */
-        .result-screen text-align-left {
-            text-align: left;
-        }
         .mbti-title {
             font-size: 4rem;
             font-weight: 900;
@@ -318,7 +315,7 @@
                 advices: ["가끔은 매뉴얼에 없는 '예외'와 '돌발 상황'을 유연하게 포용하는 연습이 필요합니다.", "논리가 전부가 아니니, 동료들의 감정 섞인 고민에도 귀를 기울여주세요."]
             },
             "ISFJ": {
-                emoji: "🛡️", nickname: " 헌신적이고 세심한 황금빛 수호자",
+                emoji: "🛡️", nickname: "헌신적이고 세심한 황금빛 수호자",
                 desc: "타인의 필요를 귀신같이 알아채고 뒤에서 묵묵히 돕는 진정한 배려의 아이콘입니다. 뛰어난 기억력으로 주변 사람들의 대소사를 챙기며, 전통과 가치를 중시하는 따뜻하고 이타적인 성격을 소유하고 있습니다.",
                 strengths: ["주변 사람들의 사소한 특징까지 기억하는 섬세함", "집단에 평화를 가져다주는 최고의 이타성과 조화력", "주어진 의무를 묵묵히 수행하는 든든한 성실성"],
                 weaknesses: ["과도한 이타심으로 정작 자신의 내면 상처를 돌보지 못함", "타인의 부탁에 '아니오'를 외치지 못하는 거절 불능증", "과거의 상처에 얽매여 새로운 도전을 두려워함"],
@@ -481,10 +478,18 @@
             mbti += (scores.T >= scores.F) ? "T" : "F";
             mbti += (scores.J >= scores.P) ? "J" : "P";
 
-            const result = mbtiPremiumDB[mbti];
+            // 문자열 앞뒤 공백을 확실하게 자르는 .trim() 안전장치 탑재!
+            const targetMbti = mbti.trim();
+            const result = mbtiPremiumDB[targetMbti];
+
+            // 매핑 데이터 에러 헨들링 백업 코드
+            if (!result) {
+                alert("결과 도출 중 오류가 발생했습니다. 유형 코드: " + targetMbti);
+                return;
+            }
 
             // 데이터 바인딩
-            document.getElementById('mbti-title').innerText = mbti;
+            document.getElementById('mbti-title').innerText = targetMbti;
             document.getElementById('mbti-emoji').innerText = result.emoji;
             document.getElementById('mbti-nickname').innerText = result.nickname;
             document.getElementById('mbti-desc').innerText = result.desc;
